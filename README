@@ -1,0 +1,8 @@
+(defpallet
+  :services
+    {:aws-ec2 {:provider "aws-ec2"
+               :identity "public-key"
+               :credential "secret-key"}}
+  :environment { :user { :username "admin"
+                         :public-key-path "/path-to/.ssh/ec2_rsa.pub"
+                         :private-key-path "/path-to/.ssh/ec2_rsa"}}) 
