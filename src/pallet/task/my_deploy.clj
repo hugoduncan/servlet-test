@@ -3,6 +3,7 @@
  (:require
    [servlet-test.ops.nodes :as webdeploy-nodes]
    pallet.core
+   pallet.utils
    [org.jclouds.compute :as jcompute]
    [clojure.contrib.logging :as log]))
 
@@ -13,4 +14,4 @@
 
 (pallet.core/converge {webdeploy-nodes/groupserver 1}
                       :compute cloud-service
-                      :phase :deploy))
+                      :phase [:configure :deploy])

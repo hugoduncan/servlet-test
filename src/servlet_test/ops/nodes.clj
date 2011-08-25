@@ -26,7 +26,8 @@
 (def nodespec (pallet.core/node-spec
                :image {:os-family :ubuntu
                        :os-description-matches "10.10"}
-               :hardware {:min-ram 512}
+               :hardware {:min-ram 512
+                          :hardware-id "t1.micro"}
                           ;; can optionally require cloud-specific images and node sizes if you like
                           ;; (strongly recommended for real usage!)
                           ;; :image-id "us-east-1/ami-508c7839"

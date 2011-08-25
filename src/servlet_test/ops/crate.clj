@@ -24,9 +24,9 @@
       ; allow tomcat to run on ports < 1024
       :AUTHBIND "yes")
     (tomcat/server-configuration
-      (tomcat/server
+      (tomcat/server :port port
        (tomcat/service
-        (tomcat/engine "Catalina" "host" (tomcat/valve :request-dumper))
+        (tomcat/engine "catalina" "host" (tomcat/valve :request-dumper))
         (tomcat/connector :port (str port) :protocol "HTTP/1.1"
             :connectionTimeout "20000"
             :redirectPort "8443"))))
