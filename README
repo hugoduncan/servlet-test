@@ -1,3 +1,4 @@
+## ~/.pallet/config.clj
 (defpallet
   :services
     {:aws-ec2 {:provider "aws-ec2"
