@@ -11,6 +11,6 @@
 (when-not webdeploy-nodes/warfile-path
   (throw (IllegalStateException. "No .war file defined, cannot deploy")))
 
-(pallet.core/converge {webdeploy-nodes/appserver 1}
+(pallet.core/converge {webdeploy-nodes/groupserver 1}
                       :compute cloud-service
-                      :phase [:deploy]))
+                      :phase :deploy))

@@ -12,4 +12,5 @@
   (throw (IllegalStateException. "No .war file defined, cannot deploy")))
 
 (pallet.core/converge {webdeploy-nodes/appserver 0}
-                      :compute cloud-service))
+                      :compute cloud-service
+                      :prefix "test"))

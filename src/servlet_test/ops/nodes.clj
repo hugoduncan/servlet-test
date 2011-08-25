@@ -24,14 +24,14 @@
       (log/fatal "No .war artifact available in target dir, deployment operations will FAIL"))))
 
 (def nodespec (pallet.core/node-spec
-               :hardware {:os-family :ubuntu
-                          :os-description-matches "10.10"
-                          :min-ram 1024
+               :image {:os-family :ubuntu
+                       :os-description-matches "10.10"}
+               :hardware {:min-ram 512}
                           ;; can optionally require cloud-specific images and node sizes if you like
                           ;; (strongly recommended for real usage!)
                           ;; :image-id "us-east-1/ami-508c7839"
                           ;; :hardware-id "m1.small"
-                          :inbound-ports [22 80]}))
+                :network {:inbound-ports [22 80]}))
 
 (def appserver
   (pallet.core/server-spec
@@ -43,3 +43,8 @@
             :deploy (pallet.phase/phase-fn
                      (webdeploy-crate/tomcat-deploy warfile-path))}
    :node-spec nodespec))
+
+(def groupserver
+  (pallet.core/group-spec
+   "AWS Group"
+   :extends appserver))
