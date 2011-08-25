@@ -25,27 +25,36 @@
 
 (def nodespec (pallet.core/node-spec
                :image {:os-family :ubuntu
-                       :os-description-matches "10.10"}
+                      :os-description-matches "10.10"}
                :hardware {:min-ram 512
-                          :hardware-id "t1.micro"}
-                          ;; can optionally require cloud-specific images and node sizes if you like
-                          ;; (strongly recommended for real usage!)
-                          ;; :image-id "us-east-1/ami-508c7839"
-                          ;; :hardware-id "m1.small"
-                :network {:inbound-ports [22 80]}))
+                          :hardware-id "t1.micro"
+                         }
+               ;; can optionally require cloud-specific images and node sizes if you like
+               ;; (strongly recommended for real usage!)
+               ;; :image-id "us-east-1/ami-508c7839"
+               ;; :hardware-id "m1.small"
+               :network {:inbound-ports [22 80]}))
+
+(def tomcat-settings (tomcat/settings-map {:version 6}))
 
 (def appserver
   (pallet.core/server-spec
    :phases {:bootstrap (pallet.phase/phase-fn
                         (admin/automated-admin-user))
+            :settings (fn [session]
+                        (tomcat/settings
+                         session
+                         (assoc tomcat-settings
+                          :server (webdeploy-crate/tomcat-server))))
             :configure (pallet.phase/phase-fn
                         (pallet.crate.java/java :openjdk)
-                        (tomcat/tomcat))
+                        (tomcat/install)
+                        (webdeploy-crate/tomcat-config))
             :deploy (pallet.phase/phase-fn
-                     (webdeploy-crate/tomcat-deploy warfile-path))}
-   :node-spec nodespec))
+                     (webdeploy-crate/tomcat-deploy warfile-path))}))
 
 (def groupserver
   (pallet.core/group-spec
-   "AWS Group"
-   :extends appserver))
+   "AWS-Group"
+   :extends appserver
+   :node-spec nodespec))
